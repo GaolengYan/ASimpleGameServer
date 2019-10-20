@@ -1,7 +1,6 @@
 package com.simple.server.action;
 
 import com.google.protobuf.MessageLite;
-import com.google.protobuf.Parser;
 import com.simple.server.proto.ProtoMsg;
 
 import java.util.HashMap;
