@@ -1,0 +1,11 @@
+syntax = "proto3";
+option java_outer_classname = "LoginMessage";
+
+message LoginRequest{
+    string AccName = 1;
+    string PassWord = 2;
+}
+
+message LoginResponse{
+    int32 Result = 1;
+}
