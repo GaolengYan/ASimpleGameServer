@@ -1,7 +1,7 @@
 package com.simple.server.proto.protobuf;
 
 import com.google.protobuf.MessageLite;
-import com.simple.server.proto.ProtoMsg;
+import com.simple.server.proto.Request;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
@@ -38,7 +38,7 @@ public class ProtobufDecoder extends ByteToMessageDecoder {
         }
         MessageLite msg = decodeBody(requestId, array, offset, bodyLength);
         ReferenceCountUtil.release(commandBytes);
-        list.add(new ProtoMsg(requestId, msg));
+        list.add(new Request(requestId, msg));
     }
 
     private MessageLite decodeBody(int requestId, byte[] body, int offset, int length) {

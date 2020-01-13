@@ -1,7 +1,8 @@
 package com.simple.server.proto.protobuf;
 
 import com.google.protobuf.MessageLite;
-import com.simple.server.proto.ProtoMsg;
+import com.simple.server.proto.Request;
+import com.simple.server.proto.binary.Protocol;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
@@ -11,17 +12,17 @@ import io.netty.handler.codec.MessageToByteEncoder;
 /* --------------------------
 /* |  length:4  |   cmd:4   |
 /* -------------------------- */
-public class ProtobufEncoder extends MessageToByteEncoder<ProtoMsg> {
+public class ProtobufEncoder extends MessageToByteEncoder<Request> {
 
     @Override
-    protected void encode(ChannelHandlerContext channelHandlerContext, ProtoMsg protoMsg, ByteBuf byteBuf) throws Exception {
-        int cmd = protoMsg.getCmd();
-        MessageLite messageLite = protoMsg.getMessageLite();
+    protected void encode(ChannelHandlerContext channelHandlerContext, Request request, ByteBuf byteBuf) throws Exception {
+        int cmd = request.getCmd();
+        MessageLite messageLite = request.getMessageLite();
 
         byte[] body = messageLite.toByteArray();
         byte[] header = packHeader(cmd, body.length);
 
-        byte[] result = pack(header, body);
+        byte[] result = Protocol.byteMerger(header, body);
         byteBuf.writeBytes(result);
 
     }
@@ -40,11 +41,5 @@ public class ProtobufEncoder extends MessageToByteEncoder<ProtoMsg> {
         header[4] = (byte) ((cmd >> 24) & 0xff);
         return header;
     }
-    // 拼接消息头和消息体
-    private byte[] pack(byte[] header, byte[] body){
-        byte[] result = new byte[header.length + body.length];
-        System.arraycopy(header, 0, result, 0, header.length);
-        System.arraycopy(body, 0, result, header.length, body.length);
-        return result;
-    }
+
 }

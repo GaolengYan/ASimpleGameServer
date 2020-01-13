@@ -1,12 +1,13 @@
 package com.simple.server.netty;
 
 import com.simple.server.action.ActionManager;
-import com.simple.server.proto.ProtoMsg;
+import com.simple.server.login.action.LoginAction;
+import com.simple.server.proto.Request;
 import com.simple.server.session.SessionManager;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-public class SocketServerHandler extends SimpleChannelInboundHandler<ProtoMsg> {
+public class SocketServerHandler extends SimpleChannelInboundHandler<Request> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
           }
@@ -22,9 +23,14 @@ public class SocketServerHandler extends SimpleChannelInboundHandler<ProtoMsg> {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, ProtoMsg protoMsg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, Request request) throws Exception {
+        int cmd = request.getCmd();
+        if (cmd == 10001){
+            LoginAction loginAction = new LoginAction();
+            loginAction.action(cmd, request, ctx.channel());
+        }
         ActionManager actionManager = new ActionManager();
-        actionManager.dispatch(protoMsg);
+        actionManager.dispatch(request);
     }
 
 }

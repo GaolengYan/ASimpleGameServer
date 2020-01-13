@@ -1,6 +1,6 @@
 package com.simple.server.action;
 
-import com.google.protobuf.MessageLite;
+import com.simple.server.proto.Request;
 
 /**
  * @Author：yanweifan
@@ -9,5 +9,5 @@ import com.google.protobuf.MessageLite;
  * @Description:
  */
 public interface Action {
-    void action(int cmd, MessageLite messageLite);
+    void action(int cmd, Request request);
 }
