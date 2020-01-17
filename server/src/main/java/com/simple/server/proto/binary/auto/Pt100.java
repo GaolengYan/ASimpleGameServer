@@ -26,7 +26,6 @@ public class Pt100 implements Pt {
 
         if (cmd == 10001){
 			int res = (int) hashMap.get(1);
-			System.out.println("res" + res);
 			return Protocol.writeInt32(res);
 		}
 		return new byte[0];

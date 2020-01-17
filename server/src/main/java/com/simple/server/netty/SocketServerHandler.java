@@ -24,12 +24,7 @@ public class SocketServerHandler extends SimpleChannelInboundHandler<Request> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Request request) throws Exception {
-        int cmd = request.getCmd();
-        if (cmd == 10001){
-            LoginAction loginAction = new LoginAction();
-            loginAction.action(cmd, request, ctx.channel());
-        }
-        ActionManager actionManager = new ActionManager();
+        ActionManager actionManager = ActionManager.getInstance();
         actionManager.dispatch(request);
     }
 

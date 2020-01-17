@@ -38,7 +38,7 @@ public class ProtobufDecoder extends ByteToMessageDecoder {
         }
         MessageLite msg = decodeBody(requestId, array, offset, bodyLength);
         ReferenceCountUtil.release(commandBytes);
-        list.add(new Request(requestId, msg));
+        list.add(new Request(requestId, msg, channelHandlerContext.channel()));
     }
 
     private MessageLite decodeBody(int requestId, byte[] body, int offset, int length) {

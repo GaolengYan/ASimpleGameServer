@@ -12,24 +12,26 @@ import java.util.HashMap;
  * @Description  协议转发模块
  */
 public class ActionManager {
+    private static ActionManager actionManager = new ActionManager();
     private HashMap<Integer, Action> actionMap = new HashMap<>();
 
     private void init(){
-
+        actionMap.put(100, (Action) new LoginAction());
     }
 
     public void dispatch(Request request) {
         int cmd = request.getCmd();
-        Action action = actionMap.get(cmd);
+        Action action = actionMap.get(cmd / 100);
         if(action != null) {
             action.action(cmd, request);
         }
     }
 
-
-
-    public ActionManager(){
+    private ActionManager(){
         init();
     }
 
+    public static ActionManager getInstance() {
+        return actionManager;
+    }
 }

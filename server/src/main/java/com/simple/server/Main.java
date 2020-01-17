@@ -1,12 +1,9 @@
 package com.simple.server;
 
 
-import com.simple.server.login.action.LoginAction;
 import com.simple.server.netty.MyChannelInitializer;
-import com.simple.server.proto.Request;
 import com.simple.server.proto.binary.Protocol;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -14,7 +11,6 @@ import org.javatuples.Pair;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Properties;
 
 public class Main {
@@ -49,15 +45,9 @@ public class Main {
     }
 //    协议测试方法
     private static void test(){
-//        String s = "测试";
-//        byte[] bytes = Protocol.writeString(s);
-//        Pair pair = Protocol.readString(bytes);
-//        System.out.println(pair.getValue0());
-//        HashMap hashMap = new HashMap();
-//        hashMap.put(1, "1234");
-//        hashMap.put(2, "1234");
-//        Request request = new Request(10001, hashMap);
-//        LoginAction loginAction = new LoginAction();
-//        loginAction.action(10001, request);
+        int a = 25535;
+        byte[] bytes = Protocol.writeInt16(a);
+        Pair pair = Protocol.readInt16(bytes);
+        System.out.println(pair.getValue0());
     }
 }

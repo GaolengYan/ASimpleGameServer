@@ -19,15 +19,6 @@ public class Protocol {
     }
 
     // 读取字符串
-    public static String readString(ByteBuf byteBuf){
-        short strLength = readInt16(byteBuf); // 字符串长度
-        ByteBuf strByteBuf = byteBuf.readBytes(strLength);
-        String str = strByteBuf.toString(StandardCharsets.UTF_8);
-        ReferenceCountUtil.release(strByteBuf);
-        return str;
-    }
-
-    // 读取字符串
     public static Pair<String, byte[]> readString(byte[] bytes){
         Pair pair = readInt16(bytes); // 字符串长度
         int strLength = (int) pair.getValue0();
@@ -48,10 +39,6 @@ public class Protocol {
             bytes[i] = (byte) ((num >>> offset) & 0xff);
         }
         return bytes;
-    }
-
-    public static short readInt16(ByteBuf byteBuf){
-        return LITTLE_ENDIAN ? byteBuf.readShortLE() : byteBuf.readShort();
     }
 
     public static Pair readInt16(byte[] bytes){
@@ -79,11 +66,6 @@ public class Protocol {
             bytes[i] = (byte) ((num >>> offset) & 0xff);
         }
         return bytes;
-    }
-
-    // 读32位整型
-    public static long readInt32(ByteBuf byteBuf){
-        return LITTLE_ENDIAN ? byteBuf.readLongLE() : byteBuf.readLong();
     }
 
     public static Pair readInt32(byte[] bytes){
@@ -118,8 +100,6 @@ public class Protocol {
         return bytes;
     }
 
-
-
     // 读64位无符号整型
     public static Pair readInt64(byte[] bytes){
         if (bytes.length < 8) {
@@ -130,37 +110,11 @@ public class Protocol {
                 int offset=(LITTLE_ENDIAN ? i : (7 - i)) << 3;
                 num |=((long)0xff<< offset) & ((long)bytes[i] << offset);
             }
-//
-//            long num;
-//            if (LITTLE_ENDIAN) {
-//                num = (long) ((bytes[0] & 0xFF)
-//                    | ((bytes[1] & 0xFF) << 8)
-//                    | ((bytes[2] & 0xFF) << 16)
-//                    | ((bytes[3] & 0xFF) << 24)
-//                    | ((bytes[4] & 0xFF) << 32)
-//                    | ((bytes[5] & 0xFF) << 40)
-//                    | ((bytes[6] & 0xFF) << 48)
-//                    | ((bytes[7] & 0xFF) << 56));
-//            }else{
-//                num = (long) ((bytes[7] & 0xFF)
-//                    | ((bytes[6] & 0xFF) << 8)
-//                    | ((bytes[5] & 0xFF) << 16)
-//                    | ((bytes[4] & 0xFF) << 24)
-//                    | ((bytes[3] & 0xFF) << 32)
-//                    | ((bytes[2] & 0xFF) << 40)
-//                    | ((bytes[1] & 0xFF) << 48)
-//                    | ((bytes[0] & 0xFF) << 56));
-//            }
             byte[] leftBytes = new byte[bytes.length - 8];
             System.arraycopy(bytes, 8, leftBytes, 0, bytes.length - 8);
             return Pair.with(num, leftBytes);
         }
     }
-
-
-    // 写数组
-
-    // 读数组
 
     // 拼接2个byte数组
     public static byte[] byteMerger(byte[] header, byte[] body){

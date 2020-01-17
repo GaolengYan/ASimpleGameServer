@@ -16,14 +16,12 @@ import java.util.HashMap;
  * @CreateDate：2019/10/20
  * @Description:
  */
-public class LoginAction {
-
-    public void action(int cmd, Request request, Channel channel) {
+public class LoginAction implements Action {
+    public void action(int cmd, Request request) {
+        Channel channel = request.getChannel();
         HashMap argsMap = request.getHashMap();
         String accName = (String) argsMap.get(1);
         String passWord = (String) argsMap.get(2);
-        System.out.println("账号：" + accName);
-        System.out.println("密码：" + passWord);
         HashMap responseArgsMap = new HashMap();
         int res;
         Session session = HibernateUtil.getSession();
